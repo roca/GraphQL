@@ -1,0 +1,13 @@
+version: "2"
+ 
+services:
+    mongo:
+      container_name: mongo
+      build:
+        context: .
+        dockerfile: .docker/mongo.dockerfile
+      ports:
+        - "27017:27017"
+      env_file:
+        - ./.docker/env/mongo.env
+  
