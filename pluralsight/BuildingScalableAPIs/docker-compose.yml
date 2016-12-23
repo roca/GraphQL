@@ -10,4 +10,13 @@ services:
         - "27017:27017"
       env_file:
         - ./.docker/env/mongo.env
+    postgres:
+      container_name: postgres
+      build:
+        context: .
+        dockerfile: .docker/postgres.dockerfile
+      ports:
+        - "5432:5432"
+      env_file:
+        - ./.docker/env/postgres.env
   
