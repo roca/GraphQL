@@ -1,7 +1,9 @@
-const { MongoClient } = require('mongodb');
+const  MongoClient  = require('mongodb');
 const assert = require('assert');
-const { nodeEnv } = require('../lib/util');
-const mongoConfig = require('../config/mongo')[nodeEnv];
+const Env  = require('../lib/util');
+const mongoConfig = require('../config/mongo')[Env.nodeEnv];
+
+console.log('nodeEnv: ' + Env.nodeEnv);
 
 MongoClient.connect(mongoConfig.url, (err, db) => {
   assert.equal(null, err);

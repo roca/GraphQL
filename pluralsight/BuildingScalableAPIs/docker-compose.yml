@@ -19,34 +19,33 @@ services:
         - "5432:5432"
       env_file:
         - ./.docker/env/postgres.env
-    app:
-      container_name: app
-      build: 
-        context: .
-        dockerfile: .docker/app.dockerfile
-      ports:
-        - "3000:3000"
-      depends_on:
-        - "mongo" 
-        - "postgres"
-      command:  >
-         /bin/sh -c "
-            while ! nc -z postgres 5432;
-            do
-                echo sleeping;
-                sleep 3;
-            done;
-            echo 'Connected to PostGres Database!';
-            while ! nc -z mongo 27017;
-            do
-                echo sleeping;
-                sleep 3;
-            done;
-            echo 'Connected to Mongo Database!';
-            PGPASSWORD=postgres psql -h postgres -Upostgres contest < /var/app/database/test-pg-data.sql &&
-            node /var/app/database/loadTestMongoData.js"
-      volumes:
-        - ./app:/var/app
-      working_dir: /var/app
+    # app:
+    #   container_name: app
+    #   build: 
+    #     context: .
+    #     dockerfile: .docker/app.dockerfile
+    #   ports:
+    #     - "3000:3000"
+    #   depends_on:
+    #     - "mongo" 
+    #     - "postgres"
+    #   command:  >
+    #      /bin/sh -c "
+    #         while ! nc -z postgres 5432;
+    #         do
+    #             echo sleeping;
+    #             sleep 3;
+    #         done;
+    #         echo 'Connected to PostGres Database!';
+    #         while ! nc -z mongo 27017;
+    #         do
+    #             echo sleeping;
+    #             sleep 3;
+    #         done;
+    #         echo 'Connected to Mongo Database!';
+    #         PGPASSWORD=postgres psql -h postgres -Upostgres contest < /var/app/database/test-pg-data.sql"
+    #   volumes:
+    #     - ./app:/var/app
+    #   working_dir: /var/app
         
   
