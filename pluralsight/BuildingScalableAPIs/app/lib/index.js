@@ -1,5 +1,5 @@
-const Env  = require('./util');
-console.log(`Running in ${Env.nodeEnv} mode...`);
+const { nodeEnv } = require('./util');
+console.log(`Running in ${nodeEnv} mode...`);
 
 
 // Read the query from the command line arguments
