@@ -1,14 +1,22 @@
 const { nodeEnv } = require('./util');
 console.log(`Running in ${nodeEnv} mode...`);
 
+const pg = require('pg');
+const pgConfig = require('../config/pg')[nodeEnv];
+const pgPool = new pg.Pool(pgConfig);
 
-// Read the query from the command line arguments
-const query = process.argv[2];
+const app = require('express')();
 
 const ncSchema = require('../schema');
-const { graphql } = require('graphql');
+const graphqlHTTP = require('express-graphql');
 
-//Excute the query against the dfines server schema
-graphql(ncSchema,query).then(result => {
-  console.log(result);
-});
+app.use('/graphql',graphqlHTTP({
+    schema: ncSchema,
+    graphiql: true,
+    context: { pgPool }
+}));
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT,() => {
+  console.log(`srever is listening on port ${PORT}`);
+})
