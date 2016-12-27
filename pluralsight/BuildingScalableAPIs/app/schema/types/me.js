@@ -2,11 +2,15 @@ const {
     GraphQLObjectType,
     GraphQLID,
     GraphQLString,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLList
 } = require('graphql');
 
+const pgdb = require('../../database/pgdb');
+const ContestType = require('./contest');
+
  module.exports = new GraphQLObjectType({
-    name: 'meType',
+    name: 'MeType',
     fields: {
         id: { type: GraphQLID},
         firstName: {type: GraphQLString},
@@ -16,6 +20,15 @@ const {
             resolve: obj => `${obj.firstName} ${obj.lastName}`
         },
         email: { type: new GraphQLNonNull(GraphQLString)},
-        createdAt: {type: GraphQLString}
+        createdAt: {type: GraphQLString},
+        contests: {
+            type: new GraphQLList(ContestType) ,
+            resolve: (obj, args, { pgPool }) => {
+                // Read user information from database
+                // using args.key as the api key
+                // using pgPool...
+                return pgdb(pgPool).getContests(obj);
+            }
+        }
     }
 })
