@@ -1,7 +1,7 @@
 module.exports = {
   development: {
     database: 'contest',
-    host: '192.168.99.100',
+    host: 'postgres',
     user: 'postgres',
     password: 'postgres'
   }
