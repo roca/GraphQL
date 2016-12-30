@@ -19,8 +19,9 @@ module.exports = new GraphQLObjectType({
             createdAt: { type: new GraphQLNonNull(GraphQLString)},
             createdBy: { 
                 type:  new GraphQLNonNull(UserType),
-                resolve: (obj, args, { pgPool }) => {
-                    return pgdb(pgPool).getUserById(obj.createdBy);
+                resolve: (obj, args, { loaders }) => {
+                    return loaders.userByIds.load(obj.createdBy);
+                    //return pgdb(pgPool).getUserxById(obj.createdBy);
                 }
             }
         };

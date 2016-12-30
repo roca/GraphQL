@@ -7,7 +7,6 @@ const {
     GraphQLInt
 } = require('graphql');
 
-const pgdb = require('../../database/pgdb');
 const mdb = require('../../database/mdb');
 const ContestType = require('./contest');
 
@@ -25,11 +24,12 @@ const ContestType = require('./contest');
         createdAt: {type: GraphQLString},
         contests: {
             type: new GraphQLList(ContestType) ,
-            resolve: (obj, args, { pgPool }) => {
+            resolve: (obj, args, { loaders }) => {
                 // Read user information from database
                 // using args.key as the api key
                 // using pgPool...
-                return pgdb(pgPool).getContests(obj);
+                return loaders.contestsForUserIds.load(obj.id);
+                // return pgdb(pgPool).getContests(obj);
             }
         },
         contestsCount: {
