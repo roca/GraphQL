@@ -1,22 +1,9 @@
-const humps = require('humps');
-const _ = require('lodash');
+
+const { orderedFor } = require('../lib/util');
 
 module.exports = pgPool => {
-    const orderedFor = (rows, collection, field, singleObject) => {
-       // return the rows ordered for the collection
-       const data = humps.camelizeKeys(rows);
-       const inGroupsOfField = _.groupBy(data, field);
-       return collection.map(element => {
-           const elementArray = inGroupsOfField[element];
-           if (elementArray) {
-               return singleObject ? elementArray[0] : elementArray;
-           } 
-           return  singleObject ? {} : [];
-       });
-    }
-
     return {
-        getUsersByApiKeys(apiKeys) {
+        getUsersByApiKeys: (apiKeys) => {
             return pgPool.query(`
                 select * from users
                 where api_key = ANY($1)
@@ -24,7 +11,7 @@ module.exports = pgPool => {
                 return orderedFor(res.rows,apiKeys, 'apiKey', true);
             });
         },
-        getUsersByIds(userIds) {
+        getUsersByIds: (userIds) => {
             return pgPool.query(`
                 select * from users
                 where id = ANY($1)
@@ -32,7 +19,7 @@ module.exports = pgPool => {
                 return orderedFor(res.rows, userIds, 'id', true);
             });
         },
-        getContestsForUserIds(userIds) {
+        getContestsForUserIds: (userIds) => {
             return pgPool.query(`
             select * from contests 
             where created_by = ANY($1)
@@ -40,12 +27,20 @@ module.exports = pgPool => {
                 return orderedFor(res.rows, userIds, 'createdBy', false);
             });
         },
-       getNamesForContestIds(contestIds) {
+       getNamesForContestIds: (contestIds) => {
             return pgPool.query(`
             select * from names 
             where contest_id = ANY($1) 
             `,[contestIds]).then( res => {
                 return orderedFor(res.rows, contestIds, 'contestId', false);
+            });
+        },
+        getTotalVotesByNameIds: (nameIds) => {
+            return pgPool.query(`
+            select name_id, up, down from total_votes_by_name 
+            where name_id = ANY($1) 
+            `,[nameIds]).then( res => {
+                return orderedFor(res.rows, nameIds, 'nameId', true);
             });
         }
         

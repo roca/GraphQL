@@ -19,12 +19,19 @@ const mConfig = require('../config/mongo')[nodeEnv];
 MongoClient.connect(mConfig.url, (err, mPool) => {
  assert.equal(err, null);
 
+ const mdb = require('../database/mdb')(mPool);
+
     app.use('/graphql', (req, res) => {
         const loaders = {
-            userByIds: new DataLoader(pgdb.getUsersByIds),
+            usersByIds: new DataLoader(pgdb.getUsersByIds),
             usersByApiKeys: new DataLoader(pgdb.getUsersByApiKeys),
             namesForContestIds: new DataLoader(pgdb.getNamesForContestIds),
-            contestsForUserIds: new DataLoader(pgdb.getContestsForUserIds)
+            contestsForUserIds: new DataLoader(pgdb.getContestsForUserIds),
+            totalVotesByNameIds: new DataLoader(pgdb.getTotalVotesByNameIds),
+            mdb: {
+                usersByIds: new DataLoader(mdb.getUsersByIds)
+            }
+            
         };
         graphqlHTTP({
             schema: ncSchema,
@@ -35,7 +42,7 @@ MongoClient.connect(mConfig.url, (err, mPool) => {
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT,() => {
-      console.log(`srever is listening on port ${PORT}`);
+      console.log(`server is listening on port ${PORT}`);
     });
 });
 
