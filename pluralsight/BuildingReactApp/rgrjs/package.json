@@ -1,0 +1,24 @@
+{
+  "name": "rgrjs",
+  "version": "1.0.0",
+  "description": "Building Data-driven React Applications with Relay, GraphQL, and Flux",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -L --exec babel-node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/roca/GraphQL.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/roca/GraphQL/issues"
+  },
+  "homepage": "https://github.com/roca/GraphQL#readme",
+  "dependencies": {
+    "babel-cli": "^6.18.0",
+    "express": "^4.14.0",
+    "nodemon": "^1.11.0"
+  }
+}

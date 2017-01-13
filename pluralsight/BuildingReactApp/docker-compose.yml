@@ -1,0 +1,18 @@
+version: "2"
+ 
+services:
+   app:
+      container_name: app
+      build: 
+        context: .
+        dockerfile: .docker/app.dockerfile
+      ports:
+        - "3000:3000"
+      command:  >
+        /bin/sh -c "
+            npm run start"
+      volumes:
+        - ./rgrjs:/var/app
+      working_dir: /var/app
+        
+  
