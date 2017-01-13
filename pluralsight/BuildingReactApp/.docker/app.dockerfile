@@ -11,11 +11,18 @@ RUN apt-get install -y nodejs
 RUN apt-get install -y npm
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 
+RUN npm i -g babel-cli
+RUN npm i -g nodemon
+
 ENV APP_HOME /var/app
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
+
+
 ADD ./rgrjs $APP_HOME/
+
+RUN npm install
 
 
 EXPOSE 3000
