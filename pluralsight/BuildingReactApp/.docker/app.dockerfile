@@ -22,7 +22,3 @@ WORKDIR $APP_HOME
 
 ADD ./rgrjs $APP_HOME/
 
-RUN npm install
-
-
-EXPOSE 3000
