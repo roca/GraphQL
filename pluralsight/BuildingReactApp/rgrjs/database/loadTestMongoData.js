@@ -8,19 +8,10 @@ console.log('nodeEnv: ' + nodeEnv);
 MongoClient.connect(mongoConfig.url, (err, db) => {
   assert.equal(null, err);
 
-  db.collection('users').insertMany([
-    {
-      userId: 1,
-      contestsCount: 3,
-      namesCount: 0,
-      votesCount: 4
-    },
-    {
-      userId: 2,
-      contestsCount: 0,
-      namesCount: 4,
-      votesCount: 4
-    }
+  db.collection('links').insertMany([
+    { title: 'React.js Main Website', url: 'https://facebook.github.io/react' },
+    { title: 'Relay Graphql Flux  Course Site', url: 'https://app.pluralsight.com/library/courses/react-apps-with-relay-graphql-flux/table-of-contents' },
+    { title: 'graphql.org', url: 'http://graphql.org/' }
   ]).then(response => {
     console.log(response);
     db.close();

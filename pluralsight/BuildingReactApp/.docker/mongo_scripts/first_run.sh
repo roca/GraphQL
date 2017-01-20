@@ -4,7 +4,7 @@
 ROOT_USER=${MONGODB_ROOT_USERNAME}
 # ROOT_PASS=${MONGODB_ROOT_PASSWORD:-$(pwgen -s -1 16)}
 ROOT_PASS=${MONGODB_ROOT_PASSWORD}
-ROOT_DB="admin"
+ROOT_DB="rgrjs"
 ROOT_ROLE=${MONGODB_ROOT_ROLE}
 
 USER=${MONGODB_USERNAME}
@@ -55,5 +55,6 @@ echo "MongoDB Role: $ROLE"
 #during initialization of MongoDB container
 export MONGODB_ROOT_PASSWORD=""
 export MONGODB_PASSWORD=""
+export MONGODB_DBNAME="rgrjs"
 
 rm -f /.firstrun

@@ -19,7 +19,6 @@ services:
         - "3000:3000"
       depends_on:
         - "mongo" 
-        - "postgres"
       command:  >
         /bin/sh -c "
             while ! nc -z mongo 27017;
@@ -28,6 +27,7 @@ services:
                 sleep 3;
             done;
             echo 'Connected to Mongo Database!';
+            node --harmony_destructuring database/loadTestMongoData.js &&
             npm run start"
       volumes:
         - ./rgrjs:/var/app
