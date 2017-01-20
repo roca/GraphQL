@@ -2,6 +2,9 @@ FROM ubuntu:latest
 
 MAINTAINER Romel Campbell
 
+ENV MONGOID_URI mongo
+ENV MONGO_URL mongodb://mongo:27017/rgrjs
+
 RUN apt-get update
 RUN apt-get -y install netcat
 
