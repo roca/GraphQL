@@ -1,10 +1,10 @@
-import ActionDispatcher from "../ActionDispatcher";
+import AppDispatcher from "../AppDispatcher";
 import { ActionTypes } from "../Constants";
 
 let ServerActions = {
     receiveLinks(links) {
         console.log("2. In ServerActions");
-        ActionDispatcher.dispatch({
+        AppDispatcher.dispatch({
             actionType: ActionTypes.RECEIVE_LINKS,
             links
         });
