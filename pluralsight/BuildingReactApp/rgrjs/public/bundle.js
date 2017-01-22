@@ -30613,7 +30613,7 @@
 	    value: true
 	});
 	
-	var _AppDispatcher = __webpack_require__(/*! ../AppDispatcher */ 170);
+	var _AppDispatcher = __webpack_require__(/*! ../AppDispatcher */ 163);
 	
 	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
 	
@@ -30634,7 +30634,29 @@
 	exports.default = ServerActions;
 
 /***/ },
-/* 163 */,
+/* 163 */
+/*!*****************************!*\
+  !*** ./js/AppDispatcher.js ***!
+  \*****************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _flux = __webpack_require__(/*! flux */ 164);
+	
+	var _flux2 = _interopRequireDefault(_flux);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var AppDispatcher = new _flux2.default.Dispatcher();
+	
+	exports.default = AppDispatcher;
+
+/***/ },
 /* 164 */
 /*!*************************!*\
   !*** ./~/flux/index.js ***!
@@ -30988,7 +31010,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _AppDispatcher = __webpack_require__(/*! ../AppDispatcher */ 170);
+	var _AppDispatcher = __webpack_require__(/*! ../AppDispatcher */ 163);
 	
 	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
 	
@@ -31351,29 +31373,6 @@
 	  return arg === void 0;
 	}
 
-
-/***/ },
-/* 170 */
-/*!*****************************!*\
-  !*** ./js/AppDispatcher.js ***!
-  \*****************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _flux = __webpack_require__(/*! flux */ 164);
-	
-	var _flux2 = _interopRequireDefault(_flux);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var AppDispatcher = new _flux2.default.Dispatcher();
-	
-	exports.default = AppDispatcher;
 
 /***/ }
 /******/ ]);
