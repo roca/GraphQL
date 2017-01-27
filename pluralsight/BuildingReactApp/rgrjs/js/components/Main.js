@@ -5,27 +5,33 @@ import LinkStore from "../stores/LinkStore";
 let _getAppState = () => {
     return { links: LinkStore.getAll() };
 }
-export default class Main extends React.Component {
-    constructor(props) {
-        super(props);
+class Main extends React.Component {
 
-        this.state = _getAppState();
-        this.onChange = this.onChange.bind(this);
+   static propTypes = {
+        limit: React.PropTypes.number
     }
-    componentDidMount() {
-        API.fetchLinks();
-        LinkStore.on("change",this.onChange);
-    }
-    componentWillUnmount() {
-        LinkStore.removeListener("change",this.onChange);
-    }
-    onChange() {
+
+   static defaultProps = {
+        limit: 3
+    } 
+
+  state = _getAppState();
+  onChange = () => {
         console.log("4. In the View");
         this.setState(_getAppState());
     }
 
+   componentDidMount() {
+        API.fetchLinks();
+        LinkStore.on("change",this.onChange);
+    }
+
+    componentWillUnmount() {
+        LinkStore.removeListener("change",this.onChange);
+    }
+   
     render() {
-        let content = this.state.links.map(link => {
+        let content = this.state.links.slice(0,this.props.limit).map(link => {
             return <li key={link._id}>
                         <a target="_blank" href={link.url}>{link.title}</a>
                     </li>;
@@ -40,3 +46,6 @@ export default class Main extends React.Component {
         );
     };    
 };
+
+
+export default Main;
