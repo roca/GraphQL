@@ -12,7 +12,7 @@ module.exports = {
                 loader: 'babel-loader',
                 query : {
                     presets: ['es2015', 'stage-0', 'react'],
-                    plugins: [__dirname + '/babelRelayPlugin']
+                    plugins: [ __dirname + '/babelRelayPlugin' ]
                 }
             }
         ]
