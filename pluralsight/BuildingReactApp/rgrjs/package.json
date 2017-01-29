@@ -4,7 +4,7 @@
   "description": "Building Data-driven React Applications with Relay, GraphQL, and Flux",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -L --exec babel-node --presets react,es2015,stage-0 server.js"
+    "start": "nodemon -L --exec babel-node --presets react,es2015,stage-0 --ignore schema.json server.js"
   },
   "repository": {
     "type": "git",
