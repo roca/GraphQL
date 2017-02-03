@@ -27,6 +27,7 @@
     "express-graphql": "^0.6.1",
     "flux": "^3.1.2",
     "graphql": "^0.8.2",
+    "graphql-relay": "^0.5.1",
     "humps": "^2.0.0",
     "jquery": "^3.1.1",
     "kerberos": "0.0.22",

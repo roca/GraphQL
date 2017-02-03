@@ -4,15 +4,9 @@ import Relay from "react-relay";
 import Link from "./Link";
 
 class Main extends React.Component {
-   static propTypes = {
-        limit: React.PropTypes.number
-    }
-   static defaultProps = {
-        limit: 3
-    } 
     render() {
-        let content = this.props.store.links.slice(0,this.props.limit).map(link => {
-            return <Link key={link._id} link={link}/> ;
+        let content = this.props.store.linkConnection.edges.map(edge => {
+            return <Link key={edge.node.id} link={edhe.node}/> ;
         });
         return (
             <div>
@@ -30,10 +24,14 @@ Main = Relay.createContainer(Main, {
     fragments: {
         store: () => Relay.QL `
             fragment on Store {
-                links {
-                    _id,
-                    ${Link.getFragment('link')}
-                }
+                 linkConnection(first: 3 ) {
+                    edges {
+                        node {
+                            _id,
+                            ${Link.getFragment('link')}                        }
+                         }
+                    }
+                 }
             }
         `
     }
