@@ -6,7 +6,7 @@ import Link from "./Link";
 class Main extends React.Component {
     render() {
         let content = this.props.store.linkConnection.edges.map(edge => {
-            return <Link key={edge.node.id} link={edhe.node}/> ;
+            return <Link key={edge.node.id} link={edge.node}/> ;
         });
         return (
             <div>
@@ -23,16 +23,16 @@ class Main extends React.Component {
 Main = Relay.createContainer(Main, {
     fragments: {
         store: () => Relay.QL `
-            fragment on Store {
-                 linkConnection(first: 3 ) {
-                    edges {
-                        node {
-                            _id,
-                            ${Link.getFragment('link')}                        }
-                         }
-                    }
+           fragment on Store {
+             linkConnection(first: 3) {
+               edges {
+                 node {
+                   id,
+                   ${Link.getFragment('link')}                        
                  }
-            }
+               }
+             }
+           }
         `
     }
 });

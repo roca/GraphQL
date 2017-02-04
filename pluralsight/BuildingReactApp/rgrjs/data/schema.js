@@ -25,10 +25,7 @@ let Schema = (db) => {
                     linkConnection: {
                         type: linkConnection.connectionType,
                         args: connectionArgs,
-                        resolve: (_, args) => connectionFromPromisedArray(
-                            db.collection("links").find({}).toArray(),
-                            args
-                        )
+                        resolve: (_, args) => connectionFromPromisedArray( db.collection("links").find({}).toArray(), args)
                     }
                 };
             }
@@ -38,7 +35,6 @@ let Schema = (db) => {
         name: 'Link',
         fields: () => {
             return {
-                // _id: {type: GraphQLString} ,
                 id: { 
                     type: new GraphQLNonNull(GraphQLID),
                     resolve: (obj) => obj._id

@@ -46182,8 +46182,8 @@
 	    _createClass(Main, [{
 	        key: "render",
 	        value: function render() {
-	            var content = this.props.store.links.slice(0, this.props.limit).map(function (link) {
-	                return _react2.default.createElement(_Link2.default, { key: link._id, link: link });
+	            var content = this.props.store.linkConnection.edges.map(function (edge) {
+	                return _react2.default.createElement(_Link2.default, { key: edge.node.id, link: edge.node });
 	            });
 	            return _react2.default.createElement(
 	                "div",
@@ -46205,12 +46205,6 @@
 	    return Main;
 	}(_react2.default.Component);
 	
-	Main.propTypes = {
-	    limit: _react2.default.PropTypes.number
-	};
-	Main.defaultProps = {
-	    limit: 3
-	};
 	;
 	
 	Main = _reactRelay2.default.createContainer(Main, {
@@ -46219,19 +46213,82 @@
 	            return function (RQL_0) {
 	                return {
 	                    children: [{
-	                        children: [].concat.apply([], [{
-	                            fieldName: "_id",
-	                            kind: "Field",
+	                        calls: [{
+	                            kind: "Call",
 	                            metadata: {},
-	                            type: "String"
-	                        }, _reactRelay2.default.QL.__frag(RQL_0)]),
-	                        fieldName: "links",
+	                            name: "first",
+	                            value: {
+	                                kind: "CallValue",
+	                                callValue: 3
+	                            }
+	                        }],
+	                        children: [{
+	                            children: [{
+	                                children: [].concat.apply([], [{
+	                                    fieldName: "id",
+	                                    kind: "Field",
+	                                    metadata: {
+	                                        isRequisite: true
+	                                    },
+	                                    type: "ID"
+	                                }, _reactRelay2.default.QL.__frag(RQL_0)]),
+	                                fieldName: "node",
+	                                kind: "Field",
+	                                metadata: {
+	                                    canHaveSubselections: true,
+	                                    isRequisite: true
+	                                },
+	                                type: "Link"
+	                            }, {
+	                                fieldName: "cursor",
+	                                kind: "Field",
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: "String"
+	                            }],
+	                            fieldName: "edges",
+	                            kind: "Field",
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isPlural: true
+	                            },
+	                            type: "LinkEdge"
+	                        }, {
+	                            children: [{
+	                                fieldName: "hasNextPage",
+	                                kind: "Field",
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: "Boolean"
+	                            }, {
+	                                fieldName: "hasPreviousPage",
+	                                kind: "Field",
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: "Boolean"
+	                            }],
+	                            fieldName: "pageInfo",
+	                            kind: "Field",
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: "PageInfo"
+	                        }],
+	                        fieldName: "linkConnection",
 	                        kind: "Field",
 	                        metadata: {
 	                            canHaveSubselections: true,
-	                            isPlural: true
+	                            isConnection: true
 	                        },
-	                        type: "Link"
+	                        type: "LinkConnection"
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: "Fragment",
@@ -46321,6 +46378,14 @@
 	                        kind: "Field",
 	                        metadata: {},
 	                        type: "String"
+	                    }, {
+	                        fieldName: "id",
+	                        kind: "Field",
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: "ID"
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: "Fragment",
