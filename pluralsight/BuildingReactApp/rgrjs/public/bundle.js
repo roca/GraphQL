@@ -46174,9 +46174,20 @@
 	    _inherits(Main, _React$Component);
 	
 	    function Main() {
+	        var _ref;
+	
+	        var _temp, _this, _ret;
+	
 	        _classCallCheck(this, Main);
 	
-	        return _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).apply(this, arguments));
+	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	            args[_key] = arguments[_key];
+	        }
+	
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Main.__proto__ || Object.getPrototypeOf(Main)).call.apply(_ref, [this].concat(args))), _this), _this.setLimit = function (e) {
+	            var newLimit = Number(e.target.value);
+	            _this.props.relay.setVariables({ limit: newLimit });
+	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 	
 	    _createClass(Main, [{
@@ -46192,6 +46203,21 @@
 	                    "h3",
 	                    null,
 	                    "Links"
+	                ),
+	                "Showing: \xA0",
+	                _react2.default.createElement(
+	                    "select",
+	                    { onChange: this.setLimit },
+	                    _react2.default.createElement(
+	                        "option",
+	                        { value: "100" },
+	                        "100"
+	                    ),
+	                    _react2.default.createElement(
+	                        "option",
+	                        { value: "200", selected: true },
+	                        "200"
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    "ul",
@@ -46209,7 +46235,7 @@
 	
 	Main = _reactRelay2.default.createContainer(Main, {
 	    initialVariables: {
-	        limit: 4
+	        limit: 5
 	    },
 	    fragments: {
 	        store: function store() {

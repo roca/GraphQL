@@ -10,9 +10,11 @@ import {
 
 
 import {
+    globalIdField,
     connectionDefinitions,
     connectionArgs,
-    connectionFromPromisedArray
+    connectionFromPromisedArray,
+    mutationWithClientMutationId
 } from "graphql-relay"
 
 let Schema = (db) => {
@@ -22,6 +24,7 @@ let Schema = (db) => {
             name: 'Store',
             fields: () => {
                 return {
+                    id: globalIdField("Store"),
                     linkConnection: {
                         type: linkConnection.connectionType,
                         args: connectionArgs,
@@ -48,6 +51,32 @@ let Schema = (db) => {
         }
     });
 
+    let createLinkMutation = mutationWithClientMutationId({
+        name: 'CreateLink',
+
+        inputFields: {
+            title: { type: new GraphQLNonNull(GraphQLString) },
+            url: { type: new GraphQLNonNull(GraphQLString) }
+        },
+
+        outputFields: {
+            linkEdge: {
+                type: linkConnection.edgeType,
+                resolve: (obj) => {
+                    return { node: obj.ops[0], cursor: obj.insertId}
+                }
+            },
+            store: {
+                type: storeType,
+                resolve: () => store
+            }
+        },
+
+        mutateAndGetPayload: ({title,url}) => {
+            return db.collection("links").insertOne({title,url});
+        }
+    });
+
     let linkConnection = connectionDefinitions({
         name: "Link",
         nodeType: linkType
@@ -62,6 +91,15 @@ let Schema = (db) => {
                         type: storeType,
                         resolve: () => store
                     }
+                };
+            }
+        }),
+
+        mutation: new GraphQLObjectType({
+            name: "Mutation",
+            fields: () => {
+                return {
+                    createLink: createLinkMutation
                 };
             }
         })
