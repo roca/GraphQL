@@ -51,6 +51,11 @@ let Schema = (db) => {
         }
     });
 
+    let linkConnection = connectionDefinitions({
+        name: "Link",
+        nodeType: linkType
+    });
+
     let createLinkMutation = mutationWithClientMutationId({
         name: 'CreateLink',
 
@@ -77,10 +82,6 @@ let Schema = (db) => {
         }
     });
 
-    let linkConnection = connectionDefinitions({
-        name: "Link",
-        nodeType: linkType
-    });
 
     let schema = new GraphQLSchema({
         query: new GraphQLObjectType({
