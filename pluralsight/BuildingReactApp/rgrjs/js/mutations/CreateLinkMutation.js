@@ -19,21 +19,22 @@ class CreateLinkMutation extends Relay.Mutation {
         return Relay.QL`
             fragment on CreateLinkPayload {
                 linkEdge,
-                store { links }
+                store { linkConnection }
             }
         `
     }
 
     getConfigs() {
-        // return [{
-        // type: 'RANGE_ID',
-        // parentName: 'store',
-        // parentID: this.props.id,
-        // connectionName: 'linkConnection',
-        // edgeName: 'linkEdge',
-        // rangeBehaviors: {
-
-        // }}]
+        return [{
+            type: 'RANGE_ADD',
+            parentName: 'store',
+            parentID: this.props.id,
+            connectionName: 'linkConnection',
+            edgeName: 'linkEdge',
+            rangeBehaviors: {
+                '': 'append'
+            }
+        }]
     }
 
 }

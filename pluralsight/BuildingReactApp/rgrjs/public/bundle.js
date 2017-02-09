@@ -46191,22 +46191,19 @@
 	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Main.__proto__ || Object.getPrototypeOf(Main)).call.apply(_ref, [this].concat(args))), _this), _this.setLimit = function (e) {
 	            var newLimit = Number(e.target.value);
 	            _this.props.relay.setVariables({ limit: newLimit });
+	        }, _this.handleSubmit = function (e) {
+	            e.preventDefault();
+	            _reactRelay2.default.Store.commitUpdate(new _CreateLinkMutation2.default({
+	                title: _this.refs.newTitle.value,
+	                url: _this.refs.newUrl.value,
+	                store: _this.props.store
+	            }));
+	            _this.refs.newTitle.value = "";
+	            _this.refs.newUrl.value = "";
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 	
 	    _createClass(Main, [{
-	        key: "handleSubmit",
-	        value: function handleSubmit(e) {
-	            e.preventDefault();
-	            _reactRelay2.default.Store.update(new _CreateLinkMutation2.default({
-	                title: this.refs.newTitle.value,
-	                url: this.refs.newUrl.value,
-	                stroe: this.props.store
-	            }));
-	            this.refs.newTitle.value = "";
-	            this.refs.newUrl.value = "";
-	        }
-	    }, {
 	        key: "render",
 	        value: function render() {
 	            var content = this.props.store.linkConnection.edges.map(function (edge) {
@@ -46222,7 +46219,7 @@
 	                ),
 	                _react2.default.createElement(
 	                    "form",
-	                    { onSubmit: "{this.handleSubmit}" },
+	                    { onSubmit: this.handleSubmit },
 	                    _react2.default.createElement("input", { type: "text", placeholder: "Title", ref: "newTitle" }),
 	                    _react2.default.createElement("input", { type: "text", placeholder: "Url", ref: "newUrl" }),
 	                    _react2.default.createElement(
@@ -46234,7 +46231,8 @@
 	                "Showing: \xA0",
 	                _react2.default.createElement(
 	                    "select",
-	                    { onChange: this.setLimit },
+	                    { onChange: this.setLimit,
+	                        defaultValue: this.props.relay.variables.limit },
 	                    _react2.default.createElement(
 	                        "option",
 	                        { value: "100" },
@@ -46242,7 +46240,7 @@
 	                    ),
 	                    _react2.default.createElement(
 	                        "option",
-	                        { value: "200", selected: true },
+	                        { value: "200" },
 	                        "200"
 	                    )
 	                ),
@@ -46262,13 +46260,20 @@
 	
 	Main = _reactRelay2.default.createContainer(Main, {
 	    initialVariables: {
-	        limit: 5
+	        limit: 200
 	    },
 	    fragments: {
 	        store: function store() {
 	            return function (RQL_0) {
 	                return {
 	                    children: [{
+	                        fieldName: "id",
+	                        kind: "Field",
+	                        metadata: {
+	                            isRequisite: true
+	                        },
+	                        type: "ID"
+	                    }, {
 	                        calls: [{
 	                            kind: "Call",
 	                            metadata: {},
@@ -46345,14 +46350,6 @@
 	                            isConnection: true
 	                        },
 	                        type: "LinkConnection"
-	                    }, {
-	                        fieldName: "id",
-	                        kind: "Field",
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: "ID"
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: "Fragment",
@@ -46471,7 +46468,7 @@
   \********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -46501,39 +46498,39 @@
 	    }
 	
 	    _createClass(CreateLinkMutation, [{
-	        key: "getMutation",
+	        key: 'getMutation',
 	        value: function getMutation() {
 	            return function () {
 	                return {
 	                    calls: [{
-	                        kind: "Call",
+	                        kind: 'Call',
 	                        metadata: {},
-	                        name: "createLink",
+	                        name: 'createLink',
 	                        value: {
-	                            kind: "CallVariable",
-	                            callVariableName: "input"
+	                            kind: 'CallVariable',
+	                            callVariableName: 'input'
 	                        }
 	                    }],
 	                    children: [{
-	                        fieldName: "clientMutationId",
-	                        kind: "Field",
+	                        fieldName: 'clientMutationId',
+	                        kind: 'Field',
 	                        metadata: {
 	                            isGenerated: true,
 	                            isRequisite: true
 	                        },
-	                        type: "String"
+	                        type: 'String'
 	                    }],
-	                    kind: "Mutation",
+	                    kind: 'Mutation',
 	                    metadata: {
-	                        inputType: "CreateLinkInput!"
+	                        inputType: 'CreateLinkInput!'
 	                    },
-	                    name: "CreateLinkMutation",
-	                    responseType: "CreateLinkPayload"
+	                    name: 'CreateLinkMutation',
+	                    responseType: 'CreateLinkPayload'
 	                };
 	            }();
 	        }
 	    }, {
-	        key: "getVariables",
+	        key: 'getVariables',
 	        value: function getVariables() {
 	            return {
 	                title: this.props.title,
@@ -46541,24 +46538,90 @@
 	            };
 	        }
 	    }, {
-	        key: "getFatQuery",
+	        key: 'getFatQuery',
 	        value: function getFatQuery() {
 	            return function () {
-	                throw new Error("GraphQL validation error ``Cannot query field \"links\" on type \"Store\".`` in file `/Users/romelcampbell/GitHub/Repos/GraphQL/pluralsight/BuildingReactApp/rgrjs/js/mutations/CreateLinkMutation.js`. Try updating your GraphQL schema if an argument/field/type was recently added.");
+	                return {
+	                    children: [{
+	                        children: [{
+	                            fieldName: 'cursor',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'String'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'id',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'ID'
+	                            }],
+	                            fieldName: 'node',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'Link'
+	                        }],
+	                        fieldName: 'linkEdge',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true
+	                        },
+	                        type: 'LinkEdge'
+	                    }, {
+	                        children: [{
+	                            fieldName: 'linkConnection',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isConnection: true
+	                            },
+	                            type: 'LinkConnection'
+	                        }, {
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'store',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true
+	                        },
+	                        type: 'Store'
+	                    }],
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'CreateLinkMutation_ValueRelayQL',
+	                    type: 'CreateLinkPayload'
+	                };
 	            }();
 	        }
 	    }, {
-	        key: "getConfigs",
+	        key: 'getConfigs',
 	        value: function getConfigs() {
-	            // return [{
-	            // type: 'RANGE_ID',
-	            // parentName: 'store',
-	            // parentID: this.props.id,
-	            // connectionName: 'linkConnection',
-	            // edgeName: 'linkEdge',
-	            // rangeBehaviors: {
-	
-	            // }}]
+	            return [{
+	                type: 'RANGE_ADD',
+	                parentName: 'store',
+	                parentID: this.props.id,
+	                connectionName: 'linkConnection',
+	                edgeName: 'linkEdge',
+	                rangeBehaviors: {
+	                    '': 'append'
+	                }
+	            }];
 	        }
 	    }]);
 	
