@@ -46162,6 +46162,10 @@
 	
 	var _Link2 = _interopRequireDefault(_Link);
 	
+	var _CreateLinkMutation = __webpack_require__(/*! ../mutations/CreateLinkMutation */ 466);
+	
+	var _CreateLinkMutation2 = _interopRequireDefault(_CreateLinkMutation);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -46191,6 +46195,18 @@
 	    }
 	
 	    _createClass(Main, [{
+	        key: "handleSubmit",
+	        value: function handleSubmit(e) {
+	            e.preventDefault();
+	            _reactRelay2.default.Store.update(new _CreateLinkMutation2.default({
+	                title: this.refs.newTitle.value,
+	                url: this.refs.newUrl.value,
+	                stroe: this.props.store
+	            }));
+	            this.refs.newTitle.value = "";
+	            this.refs.newUrl.value = "";
+	        }
+	    }, {
 	        key: "render",
 	        value: function render() {
 	            var content = this.props.store.linkConnection.edges.map(function (edge) {
@@ -46203,6 +46219,17 @@
 	                    "h3",
 	                    null,
 	                    "Links"
+	                ),
+	                _react2.default.createElement(
+	                    "form",
+	                    { onSubmit: "{this.handleSubmit}" },
+	                    _react2.default.createElement("input", { type: "text", placeholder: "Title", ref: "newTitle" }),
+	                    _react2.default.createElement("input", { type: "text", placeholder: "Url", ref: "newUrl" }),
+	                    _react2.default.createElement(
+	                        "button",
+	                        { type: "submit" },
+	                        "Add"
+	                    )
 	                ),
 	                "Showing: \xA0",
 	                _react2.default.createElement(
@@ -46318,6 +46345,14 @@
 	                            isConnection: true
 	                        },
 	                        type: "LinkConnection"
+	                    }, {
+	                        fieldName: "id",
+	                        kind: "Field",
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: "ID"
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: "Fragment",
@@ -46428,6 +46463,109 @@
 	});
 	
 	exports.default = Link;
+
+/***/ },
+/* 466 */
+/*!********************************************!*\
+  !*** ./js/mutations/CreateLinkMutation.js ***!
+  \********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _reactRelay = __webpack_require__(/*! react-relay */ 159);
+	
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var CreateLinkMutation = function (_Relay$Mutation) {
+	    _inherits(CreateLinkMutation, _Relay$Mutation);
+	
+	    function CreateLinkMutation() {
+	        _classCallCheck(this, CreateLinkMutation);
+	
+	        return _possibleConstructorReturn(this, (CreateLinkMutation.__proto__ || Object.getPrototypeOf(CreateLinkMutation)).apply(this, arguments));
+	    }
+	
+	    _createClass(CreateLinkMutation, [{
+	        key: "getMutation",
+	        value: function getMutation() {
+	            return function () {
+	                return {
+	                    calls: [{
+	                        kind: "Call",
+	                        metadata: {},
+	                        name: "createLink",
+	                        value: {
+	                            kind: "CallVariable",
+	                            callVariableName: "input"
+	                        }
+	                    }],
+	                    children: [{
+	                        fieldName: "clientMutationId",
+	                        kind: "Field",
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: "String"
+	                    }],
+	                    kind: "Mutation",
+	                    metadata: {
+	                        inputType: "CreateLinkInput!"
+	                    },
+	                    name: "CreateLinkMutation",
+	                    responseType: "CreateLinkPayload"
+	                };
+	            }();
+	        }
+	    }, {
+	        key: "getVariables",
+	        value: function getVariables() {
+	            return {
+	                title: this.props.title,
+	                url: this.props.url
+	            };
+	        }
+	    }, {
+	        key: "getFatQuery",
+	        value: function getFatQuery() {
+	            return function () {
+	                throw new Error("GraphQL validation error ``Cannot query field \"links\" on type \"Store\".`` in file `/Users/romelcampbell/GitHub/Repos/GraphQL/pluralsight/BuildingReactApp/rgrjs/js/mutations/CreateLinkMutation.js`. Try updating your GraphQL schema if an argument/field/type was recently added.");
+	            }();
+	        }
+	    }, {
+	        key: "getConfigs",
+	        value: function getConfigs() {
+	            // return [{
+	            // type: 'RANGE_ID',
+	            // parentName: 'store',
+	            // parentID: this.props.id,
+	            // connectionName: 'linkConnection',
+	            // edgeName: 'linkEdge',
+	            // rangeBehaviors: {
+	
+	            // }}]
+	        }
+	    }]);
+	
+	    return CreateLinkMutation;
+	}(_reactRelay2.default.Mutation);
+	
+	exports.default = CreateLinkMutation;
 
 /***/ }
 /******/ ]);
