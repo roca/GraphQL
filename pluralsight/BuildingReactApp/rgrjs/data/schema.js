@@ -11,6 +11,8 @@ import {
 
 import {
     globalIdField,
+    fromGlobalId,
+    nodeDefinitions,
     connectionDefinitions,
     connectionArgs,
     connectionFromPromisedArray,
@@ -18,7 +20,24 @@ import {
 } from "graphql-relay"
 
 let Schema = (db) => {
-    let store = {};
+    class Store {}
+    let store = new Store();
+
+    let nodeDefs = nodeDefinitions(
+        (globalId) => {
+            let {type} = fromGlobalId(globalId);
+            if (type === 'Store') {
+                return store;
+            }
+            return null;
+        },
+        (obj) => {
+            if (obj instanceof Store) {  // is the store
+                return storeType;
+            }
+            return null;
+        }
+    );
 
     let storeType = new GraphQLObjectType({
             name: 'Store',
@@ -27,16 +46,28 @@ let Schema = (db) => {
                     id: globalIdField("Store"),
                     linkConnection: {
                         type: linkConnection.connectionType,
-                        args: connectionArgs,
-                        resolve: (_, args) => connectionFromPromisedArray( 
-                            db.collection("links").find({})
+                        args: {
+                            ...connectionArgs,
+                            query: { type: GraphQLString}
+                        },
+                        resolve: (_, args) => {
+                            let findParams = {};
+                            if (args.query) {
+                                findParams.title = new RegExp(args.query,'i');
+                            }
+                            return connectionFromPromisedArray( 
+                            db.collection("links")
+                            .find(findParams)
                             .sort({createdAt: -1})
                             .limit(args.first).toArray(),
                              args
-                         )
+                         );
+                        }
                     }
                 };
-            }
+            },
+            interfaces: [nodeDefs.nodeInterface]
+
     });
 
     let linkType = new GraphQLObjectType({
@@ -98,6 +129,7 @@ let Schema = (db) => {
             name: 'Query',
             fields: () => {
                 return {
+                    node: nodeDefs.nodeField,
                     store: {
                         type: storeType,
                         resolve: () => store
