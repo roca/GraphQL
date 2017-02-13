@@ -5,6 +5,7 @@
   "repository": {},
   "license": "MIT",
   "dependencies": {
-    "graphql": "^0.9.1"
+    "graphql": "^0.9.1",
+    "nodemon": "^1.11.0"
   }
 }
