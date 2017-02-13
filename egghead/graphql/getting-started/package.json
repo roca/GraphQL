@@ -1,0 +1,10 @@
+{
+  "name": "getting-started",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {},
+  "license": "MIT",
+  "dependencies": {
+    "graphql": "^0.9.1"
+  }
+}
