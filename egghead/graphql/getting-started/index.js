@@ -16,7 +16,10 @@ const {
     GraphQLBoolean
 } = require('graphql');
 
+const { globalIdField } = require('graphql-relay');
+
 const { getVideoById, getVideos, createVideo } = require('./src/data');
+const { nodeInterface, nodeField } = require('./src/node');
 
 const PORT = process.env.PORT || 3000;
 
@@ -26,17 +29,21 @@ const VideoType = new GraphQLObjectType({
     name: 'Video',
     description: 'A video on EggHead.io',
     fields: {
-        id: { type: GraphQLID, description: 'The id of the video.'  },
+        id: new globalIdField(),
         title: { type: GraphQLString, description: 'The title of the video.' },
         duration: { type: GraphQLInt, description: 'The duration of the video (in seconds).'  },
         watched: { type: GraphQLBoolean, description: 'Whether or not the viewer has watched the video'  }
-    }
+    },
+    interfaces: [nodeInterface]
 });
+
+exports.VideoType = VideoType;
 
 const queryType = new GraphQLObjectType({
     name: 'QueryType',
     description: 'The root query type.',
     fields: {
+        node: nodeField,
         videos: {
             type: new GraphQLList(VideoType),
             resolve: getVideos
