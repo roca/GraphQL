@@ -16,7 +16,12 @@ const {
     GraphQLBoolean
 } = require('graphql');
 
-const { globalIdField } = require('graphql-relay');
+const { 
+    globalIdField,
+    connectionDefinitions,
+    connectionFromPromisedArray,
+    connectionArgs
+} = require('graphql-relay');
 
 const { getVideoById, getVideos, createVideo } = require('./src/data');
 const { nodeInterface, nodeField } = require('./src/node');
@@ -39,14 +44,28 @@ const VideoType = new GraphQLObjectType({
 
 exports.VideoType = VideoType;
 
+const { connectionType: VideoConnection } = connectionDefinitions({
+    nodeType: VideoType,
+    connectionFields: {
+         totalCount: {
+            type: GraphQLInt,
+            description: 'A count of the total number of objects in this connectiom.',
+            resolve: (conn) => conn.edges.length
+         }
+         
+    }
+
+});
+
 const queryType = new GraphQLObjectType({
     name: 'QueryType',
     description: 'The root query type.',
     fields: {
         node: nodeField,
         videos: {
-            type: new GraphQLList(VideoType),
-            resolve: getVideos
+            type: VideoConnection,
+            args: connectionArgs,
+            resolve: (_, args) => connectionFromPromisedArray(getVideos(), args)
         },
         video: { 
             type: VideoType,
