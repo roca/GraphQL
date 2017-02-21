@@ -3,7 +3,7 @@ FROM ubuntu:latest
 MAINTAINER Romel Campbell
 
 ENV MONGOID_URI mongo
-ENV MONGO_URL mongodb://mongo:27017/rgrjs
+ENV MONGO_URL mongodb://mongo:27017/app
 
 RUN apt-get update
 RUN apt-get -y install netcat
@@ -18,5 +18,5 @@ ENV APP_HOME /var/app
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-ADD ./rgrjs $APP_HOME/
+ADD ./app $APP_HOME/
 

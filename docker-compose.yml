@@ -30,10 +30,10 @@ services:
             node --harmony_destructuring database/loadTestMongoData.js &&
             npm run start"
       volumes:
-        - ./rgrjs:/var/app
+        - ./app:/var/app
       environment:
         SSH_AUTH_SOCK: /ssh-agent
-        MONGO_URL: mongodb://mongo:27017/rgrjs
+        MONGO_URL: mongodb://mongo:27017/app
       working_dir: /var/app
         
   
