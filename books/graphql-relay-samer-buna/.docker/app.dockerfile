@@ -12,6 +12,7 @@ RUN apt-get -y install netcat
 RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
+RUN npm i -g nodemon
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 ENV APP_HOME /var/app
