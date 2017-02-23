@@ -27,6 +27,7 @@ services:
                 sleep 3;
             done;
             echo 'Connected to Mongo Database!';
+            node --harmony_destructuring database/loadTestMongoData.js &&
             nodemon"
       volumes:
         - ./app:/var/app
