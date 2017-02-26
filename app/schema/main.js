@@ -8,39 +8,44 @@ const {
     GraphQLInt
 } = require('graphql');
 
-const roll = () => Math.floor(6 * Math.random()) + 1;
+let Schema = (db) => {
 
-const queryType = new GraphQLObjectType({
-    name: 'RootQuery',
-    fields: {
-        hello: {
-            type: GraphQLString,
-            resolve: () => 'world'
-        },
-        diceRoll: {
-            type: new GraphQLList(GraphQLInt),
-            args: {
-                count: {type: GraphQLInt}
+    const roll = () => Math.floor(6 * Math.random()) + 1;
+
+    const queryType = new GraphQLObjectType({
+        name: 'RootQuery',
+        fields: {
+            hello: {
+                type: GraphQLString,
+                resolve: () => 'world'
             },
-            resolve: (_, args) => {
-                let rolls = [];
-                for (let i = 0; i < args.count; i++) {
-                    rolls.push(roll());
+            diceRoll: {
+                type: new GraphQLList(GraphQLInt),
+                args: {
+                    count: {type: GraphQLInt}
+                },
+                resolve: (_, args) => {
+                    let rolls = [];
+                    for (let i = 0; i < args.count; i++) {
+                        rolls.push(roll());
+                    }
+                    return rolls;
                 }
-                return rolls;
+            },
+            usersCount: {
+                type: GraphQLInt,
+                resolve: (_, args) => db.collection("users").count()
             }
-        },
-        usersCount: {
-            type: GraphQLInt,
-            resolve: (_, args, { db }) => db.collection("users").count()
+
+
         }
+    });
 
+    const schema = new GraphQLSchema({
+        query: queryType
+    });
 
-    }
-});
+    return schema;
+}
 
-const mySchema = new GraphQLSchema({
-    query: queryType
-});
-
-module.exports = mySchema;
+module.exports = Schema;
