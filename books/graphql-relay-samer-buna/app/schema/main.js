@@ -36,8 +36,6 @@ let Schema = (db) => {
                 type: GraphQLInt,
                 resolve: (_, args) => db.collection("users").count()
             }
-
-
         }
     });
 
