@@ -18,7 +18,8 @@ console.log('nodeEnv: ' + nodeEnv);
    console.log('Connected to MongoDB server');
 
     app.use('/graphql', graphqlHTTP({
-        schema
+        schema,
+        graphiql: true
     }));
 
     app.listen(3000, () => console.log('Runninng Express.js on port 3000'));
