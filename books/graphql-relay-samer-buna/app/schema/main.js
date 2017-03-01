@@ -20,6 +20,7 @@ let Schema = (db) => {
                 resolve: () => 'world'
             },
             diceRoll: {
+                description: '***Simulate*** a dice roll determined by count',
                 type: new GraphQLList(GraphQLInt),
                 args: {
                     count: {type: GraphQLInt}
@@ -33,6 +34,7 @@ let Schema = (db) => {
                 }
             },
             usersCount: {
+                description: 'Total number of users in the database',
                 type: GraphQLInt,
                 resolve: (_, args) => db.collection("users").count()
             }
