@@ -8,6 +8,9 @@ const {
     GraphQLInt
 } = require('graphql');
 
+
+const { EmployeeType } = require('./types/employeeType');
+
 let Schema = (db) => {
 
     const roll = () => Math.floor(6 * Math.random()) + 1;
