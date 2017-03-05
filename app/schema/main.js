@@ -9,7 +9,12 @@ const {
 } = require('graphql');
 
 
-const { EmployeeType } = require('./types/employeeType');
+const  { EmployeeType }  = require('./types/employeeType');
+
+const exampleEmployee = {
+    firstName: 'jane',
+    lastName: 'doe'
+};
 
 let Schema = (db) => {
 
@@ -18,6 +23,12 @@ let Schema = (db) => {
     const queryType = new GraphQLObjectType({
         name: 'RootQuery',
         fields: {
+            exampleEmployee: {
+                type: EmployeeType,
+                resolve: () => {
+                    return exampleEmployee;
+                }
+            },
             hello: {
                 type: GraphQLString,
                 resolve: () => 'world'
