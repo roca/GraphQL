@@ -11,11 +11,18 @@ const EmployeeType = new GraphQLObjectType({
     name: 'EmployeeType',
     fields: () => ({
         name: {
-            type: GraphQLString
+            type: GraphQLString,
+            args: {
+                upperCase: { type: GraphQLBoolean }
+            },
+            resolve: (obj, args) => {
+                let fullName = `${obj.firstName} ${obj.lastName}`;
+                return args.upperCase ? fullName.toUpperCase() : fullName;
+            }
         },
-        boss: { type: GraphQLString }
+        boss: { type: EmployeeType }
     })
 });
 
 
-module.exports = EmployeeType;
+module.exports = { EmployeeType };
