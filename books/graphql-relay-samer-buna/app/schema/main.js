@@ -9,7 +9,7 @@ const {
 } = require('graphql');
 
 
-const  { EmployeeType }  = require('./types/employeeType');
+const { EmployeeType }  = require('./types/employeeType');
 
 const exampleEmployee = {
     firstName: 'jane',
