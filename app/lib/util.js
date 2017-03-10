@@ -20,12 +20,13 @@ module.exports = {
         return str.toLowerCase().replace(/[\s\W-]+/,'-');
     },
     readLastLinePromise: (path) => {
-        return Promise((resolve,reject) => {
+        let promise = new Promise((resolve,reject) => {
             fs.readFile(path, (err, data) => {
                 if(err) throw reject(err);
                 resolve(data.toString().trim().split('\n').slice(-1)[0]);
             });
         });
+        return promise;
     }
 
 

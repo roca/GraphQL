@@ -26,7 +26,7 @@ let Schema = (db) => {
         fields: {
             lastQuote: {
                 type: GraphQLString,
-                resolve: () => readLastLinePromise('../data/quotes.txt')
+                resolve: () => readLastLinePromise('data/quotes.txt')
             },
             exampleEmployee: {
                 type: EmployeeType,
