@@ -1,5 +1,6 @@
 const humps = require('humps');
 const _ = require('lodash');
+const fs = require('fs');
 
 module.exports = {
   nodeEnv: process.env.NODE_ENV || 'development',
@@ -17,6 +18,16 @@ module.exports = {
     },
     slug: str => {
         return str.toLowerCase().replace(/[\s\W-]+/,'-');
+    },
+    readLastLinePromise: (path) => {
+        return Promise((resolve,reject) => {
+            fs.readFile(path, (err, data) => {
+                if(err) throw reject(err);
+                resolve(data.toString().trim().split('\n').slice(-1)[0]);
+            });
+        });
     }
+
+
 }
 

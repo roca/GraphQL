@@ -10,6 +10,7 @@ const {
 
 
 const { EmployeeType }  = require('./types/employeeType');
+const { readLastLinePromise } = require('../lib/util');
 
 const exampleEmployee = {
     firstName: 'jane',
@@ -23,6 +24,10 @@ let Schema = (db) => {
     const queryType = new GraphQLObjectType({
         name: 'RootQuery',
         fields: {
+            lastQuote: {
+                type: GraphQLString,
+                resolve: () => readLastLinePromise('../data/quotes.txt')
+            },
             exampleEmployee: {
                 type: EmployeeType,
                 resolve: () => {
