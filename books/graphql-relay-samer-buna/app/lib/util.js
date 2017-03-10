@@ -27,6 +27,15 @@ module.exports = {
             });
         });
         return promise;
+    },
+    appendLinePromise: (path, line) => {
+        let promise = new Promise((resolve,reject) => {
+            fs.appendFile(path, `\n${line}`, err => {
+                if(err) throw reject(err);
+                resolve(line);
+            });
+        });
+        return promise;
     }
 
 
