@@ -1,3 +1,5 @@
+'use strict';
+
 const humps = require('humps');
 const _ = require('lodash');
 const fs = require('fs');
