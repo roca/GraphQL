@@ -1,27 +1,28 @@
 const  { MongoClient }  = require('mongodb');
+const assert = require('assert');
 const graphqlHTTP = require('express-graphql');
 const express = require('express');
 
+const app = express();
+const Schema = require('./schema/main');
 const { nodeEnv }  = require('./lib/util');
 const mongoConfig = require('./config/mongo')[nodeEnv];
-const Schema = require('./schema/main');
-
-const app = express();
 
 console.log('nodeEnv: ' + nodeEnv);
 
-(async () => {
-
-   let db = await MongoClient.connect(mongoConfig.url); 
-   let schema = Schema(db);
-
+MongoClient.connect(mongoConfig.url, (err, db) => {
+   assert.equal(null, err);
    console.log('Connected to MongoDB server');
+
+   let schema = Schema();
 
     app.use('/graphql', graphqlHTTP({
         schema,
+        context: { db },
         graphiql: true
     }));
 
     app.listen(3000, () => console.log('Runninng Express.js on port 3000'));
 
-})();
+}); 
+ 

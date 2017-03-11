@@ -15,4 +15,19 @@ MongoClient.connect(mongoConfig.url, (err, db) => {
     console.log(response);
     db.close();
   });
+
+  db.collection('quotes').insertMany([
+    { 
+      text: "The best preparation for tomorrow is doing your best today",
+      author: "H. Jackson Brown"
+    },
+    { 
+      text: "If opportunity doesn't knock, build a door",
+      author: "Milton Berl"
+    },
+    { 
+      text: "Try to be a rainbow in someones's cloud",
+      author: "Maya Angelou"
+    }
+  ]);
 });
