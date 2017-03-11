@@ -7,9 +7,15 @@ const {
 
 
 const QuoteType = new GraphQLObjectType({
-    id: {},
-    text: {},
-    author: {}
+    name: 'Quote',
+    fields: {
+        id: {
+            type: GraphQLString,
+            resolve: obj => obj._id
+        },
+        text: { type: GraphQLString },
+        author: { type: GraphQLString }
+    }
 });
 
 
