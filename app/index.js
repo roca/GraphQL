@@ -4,6 +4,8 @@ const graphqlHTTP = require('express-graphql');
 const express = require('express');
 
 const app = express();
+app.use(express.static('public'));
+
 const Schema = require('./schema/main');
 const { nodeEnv }  = require('./lib/util');
 const mongoConfig = require('./config/mongo')[nodeEnv];
