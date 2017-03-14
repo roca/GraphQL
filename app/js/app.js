@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Relay from 'react-relay';
 
 import Quote from './quote';
 
@@ -28,22 +29,19 @@ class QuoteLibrary extends React.Component{
     }
 }
 
-class App extends React.Component {
-    static defaultProps = {
-        greeting: 'Hello'
-    };
+QuoteLibrary = Relay.createContainer(QuoteLibrary, {
+    fragments: {}
+});
 
-    render() {
-        return (
-            <div>
-                {this.props.greeting} World
-            </div>
-        );
-    }
-
+class AppRoute extends Relay.Route {
+    static routeName = 'App';
 }
 
-ReactDOM.render(<QuoteLibrary />, document.getElementById('react'));
+
+ReactDOM.render(<Relay.RootContainer 
+                    Component={QuoteLibrary} 
+                    route={new AppRoute()}
+                />, document.getElementById('react'));
 
 
 
