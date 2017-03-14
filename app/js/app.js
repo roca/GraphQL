@@ -37,6 +37,15 @@ class AppRoute extends Relay.Route {
     static routeName = 'App';
 }
 
+console.log(
+    Relay.QL `query AllQuotes {
+        allQuotes {
+            id
+            text
+            author
+        }
+    }`
+);
 
 ReactDOM.render(<Relay.RootContainer 
                     Component={QuoteLibrary} 
