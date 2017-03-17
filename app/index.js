@@ -35,9 +35,9 @@ console.log('nodeEnv: ' + nodeEnv);
 (async () => {
 
    let db = await MongoClient.connect(mongoConfig.url); 
-   let schema = Schema(db);
-
    console.log('Connected to MongoDB server');
+
+   let schema = Schema(db);
 
     app.use('/graphql', graphqlHTTP({
         schema,

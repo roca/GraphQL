@@ -9,12 +9,11 @@ const {
 const { QuoteType } = require('./types/quoteType');
 
 let QueryType = (db) => {
-
-    const QuotesLibraryType = new GraphQLObjectType({
+   const QuotesLibraryType = new GraphQLObjectType({
         name: 'QuotesLibrary',
         fields: {
             allQuotes: {
-                type: new GraphQLList(QuoteType),
+                type: new GraphQLList(QuoteType(db)),
                 description: 'A list of the quotes in the database',
                 resolve: (_, args) => db.collection('quotes').find().toArray()
             }
@@ -26,7 +25,7 @@ let QueryType = (db) => {
     const queryType = new GraphQLObjectType({
         name: 'RootQuery',
         fields: {
-            allQuotes: {
+            QuotesLibrary: {
                 type: QuotesLibraryType,
                 description: 'The Quotes Library',
                 resolve: (_, args) => quotesLibrary
