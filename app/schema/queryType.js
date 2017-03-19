@@ -6,16 +6,35 @@ const {
     GraphQLInt
 } = require('graphql');
 
+const {
+    connectionDefinitions,
+    connectionArgs,
+    connectionFromArray,
+    connectionFromPromisedArray
+} = require('graphql-relay');
+
 const { QuoteType } = require('./types/quoteType');
+
+const { connectionType: QuotesConnectionType } = 
+    connectionDefinitions({
+        name: 'Quote',
+        nodeType: QuoteType
+    });
 
 let QueryType = (db) => {
    const QuotesLibraryType = new GraphQLObjectType({
         name: 'QuotesLibrary',
         fields: {
-            allQuotes: {
-                type: new GraphQLList(QuoteType(db)),
+            quotesConnection: {
+                type: QuotesConnectionType,
                 description: 'A list of the quotes in the database',
-                resolve: (_, args) => db.collection('quotes').find().toArray()
+                args: connectionArgs,
+                resolve: (_, args) => {
+                    return connectionFromPromisedArray (
+                                db.collection('quotes').find().toArray(), 
+                                args
+                           );
+                }
             }
         }
     });
