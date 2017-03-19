@@ -5,20 +5,17 @@ const {
     GraphQLString
 } = require('graphql');
 
-let QuoteType = (db) => {
-    const quoteType = new GraphQLObjectType({
-        name: 'Quote',
-        fields: {
-            id: {
-                type: GraphQLString,
-                resolve: obj => obj._id
-            },
-            text: { type: GraphQLString },
-            author: { type: GraphQLString }
-        }
-    });
-    return quoteType;
-};
+const QuoteType = new GraphQLObjectType({
+    name: 'Quote',
+    fields: {
+        id: {
+            type: GraphQLString,
+            resolve: obj => obj._id
+        },
+        text: { type: GraphQLString },
+        author: { type: GraphQLString }
+    }
+});
 
 
 module.exports = { QuoteType };
