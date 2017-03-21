@@ -3,7 +3,8 @@
 const {   
     GraphQLObjectType,
     GraphQLList,
-    GraphQLInt
+    GraphQLInt,
+    GraphQLString
 } = require('graphql');
 
 const {
@@ -21,6 +22,9 @@ const { connectionType: QuotesConnectionType } =
         nodeType: QuoteType
     });
 
+let connectionArgsWithSerach = connectionArgs;
+connectionArgsWithSerach.searchTerm = { type: GraphQLString };
+
 let QueryType = (db) => {
    const QuotesLibraryType = new GraphQLObjectType({
         name: 'QuotesLibrary',
@@ -28,10 +32,14 @@ let QueryType = (db) => {
             quotesConnection: {
                 type: QuotesConnectionType,
                 description: 'A list of the quotes in the database',
-                args: connectionArgs,
+                args: connectionArgsWithSerach,
                 resolve: (_, args) => {
+                    let findParams = {};
+                    if (args.searchTerm) {
+                        findParams.text = new RegExp(args.searchTerm, 'i');
+                    }
                     return connectionFromPromisedArray (
-                                db.collection('quotes').find().toArray(), 
+                                db.collection('quotes').find(findParams).toArray(), 
                                 args
                            );
                 }
