@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const  { MongoClient }  = require('mongodb');
-// const assert = require('assert');
+const assert = require('assert');
 const graphqlHTTP = require('express-graphql');
 const { graphql } = require('graphql');
 const express = require('express');
@@ -16,35 +16,18 @@ const mongoConfig = require('./config/mongo')[nodeEnv];
 
 console.log('nodeEnv: ' + nodeEnv);
 
-// MongoClient.connect(mongoConfig.url, (err, db) => {
-//    assert.equal(null, err);
-//    console.log('Connected to MongoDB server');
+MongoClient.connect(mongoConfig.url, (err, db) => {
 
-//    let schema = Schema();
-
-//     app.use('/graphql', graphqlHTTP({
-//         schema,
-//         context: { db },
-//         graphiql: true
-//     }));
-
-//     app.listen(3000, () => console.log('Runninng Express.js on port 3000'));
-
-// }); 
-
-(async () => {
-
-   let db = await MongoClient.connect(mongoConfig.url); 
+   assert.equal(null, err);
    console.log('Connected to MongoDB server');
 
-   let schema = Schema(db);
+   let schema = Schema;
 
     app.use('/graphql', graphqlHTTP({
         schema,
+        context: { db },
         graphiql: true
     }));
-
-
     graphql(schema, introspectionQuery)
     .then(result => {
         fs.writeFile(
@@ -57,5 +40,5 @@ console.log('nodeEnv: ' + nodeEnv);
 
     app.listen(3000, () => console.log('Runninng Express.js on port 3000'));
 
-})();
- 
+}); 
+

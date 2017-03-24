@@ -7,14 +7,10 @@ const {
 const { QueryType } = require('./queryType');
 const { MutationType } = require('./mutationType');
 
-let Schema = (db) => {
 
-    const schema = new GraphQLSchema({
-        query: QueryType(db),
-        mutation: MutationType
-    });
-
-    return schema;
-}
+const Schema = new GraphQLSchema({
+    query: QueryType,
+    mutation: MutationType
+});
 
 module.exports = Schema;
