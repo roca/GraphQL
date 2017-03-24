@@ -15,7 +15,7 @@ const QuoteType = new GraphQLObjectType({
         },
         text: { type: GraphQLString },
         author: { type: GraphQLString },
-        likeCount: {
+        likesCount: {
             type: GraphQLInt,
             resolve: () => Math.floor(10 * Math.random())
         }
