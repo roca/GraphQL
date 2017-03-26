@@ -9,26 +9,20 @@ const {
 const { ObjectID } = require('mongodb');
 
 const { QuotesLibraryType } = require('../queryType');
-const { QuoteType } = require('./quoteType');
 
-const quotesLibrary = { type: QuotesLibraryType};
-
-const  globalIdFetcher = (globalId,{ db } ) => {
+const  globalIdFetcher = async (globalId,{ db } ) => {
     const { type, id } = fromGlobalId(globalId);
     switch (type) {
         case 'QuotesLibrary':
-            return quotesLibrary;
+            return { type: 'QuotesLibrary'};
         case 'Quote':
-            console.log(id);
-            var quote = db.collection('quotes').findOne(ObjectID(id))
-            console.log(quote);
-            return quote
+            return db.collection('quotes').findOne({_id: ObjectID(id)});
         default:
             return null;
     }
 };
 
-const globalTypeResolver = obj => obj.type || QuoteType;
+const globalTypeResolver = (obj) => obj.type || 'Quote';
 
 const { nodeInterface, nodeField } = nodeDefinitions(
     globalIdFetcher,
