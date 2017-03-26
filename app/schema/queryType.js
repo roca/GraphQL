@@ -8,6 +8,7 @@ const {
 } = require('graphql');
 
 const {
+    globalIdField,
     connectionDefinitions,
     connectionArgs,
     connectionFromArray,
@@ -15,6 +16,8 @@ const {
 } = require('graphql-relay');
 
 const { QuoteType } = require('./types/quoteType');
+const { nodeInterface, nodeField } = require('./types/nodeInterface');
+
 
 const { connectionType: QuotesConnectionType } = 
     connectionDefinitions({
@@ -27,9 +30,10 @@ connectionArgsWithSerach.searchTerm = { type: GraphQLString };
 
 
 const QuotesLibraryType = new GraphQLObjectType({
-    
     name: 'QuotesLibrary',
+    interfaces: [nodeInterface],
     fields: {
+        id: globalIdField('QuotesLibrary'),
         quotesConnection: {
             type: QuotesConnectionType,
             description: 'A list of the quotes in the database',
@@ -54,6 +58,7 @@ const QueryType = new GraphQLObjectType({
 
     name: 'RootQuery',
     fields: {
+        node: nodeField,
         QuotesLibrary: {
             type: QuotesLibraryType,
             description: 'The Quotes Library',
@@ -68,6 +73,6 @@ const QueryType = new GraphQLObjectType({
 });
 
 
- module.exports = { QueryType };
+ module.exports = { QueryType, QuotesLibraryType };
 
 

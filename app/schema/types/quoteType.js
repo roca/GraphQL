@@ -6,13 +6,17 @@ const {
     GraphQLInt
 } = require('graphql');
 
+const {
+    globalIdField
+} = require('graphql-relay');
+
+const { nodeInterface } = require('./nodeInterface');
+
 const QuoteType = new GraphQLObjectType({
     name: 'Quote',
+    interfaces: [nodeInterface],
     fields: {
-        id: {
-            type: GraphQLString,
-            resolve: obj => obj._id
-        },
+        id: globalIdField('Quote', obj => obj._id),
         text: { type: GraphQLString },
         author: { type: GraphQLString },
         likesCount: {
@@ -21,6 +25,5 @@ const QuoteType = new GraphQLObjectType({
         }
     }
 });
-
 
 module.exports = { QuoteType };
