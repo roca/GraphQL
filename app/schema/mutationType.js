@@ -35,7 +35,7 @@ const thumbsUpMutation = mutationWithClientMutationId({
                 {_id: ObjectID(id)},
                 { $inc: { likesCount: 1}}
             )
-        ).then(result => db.collection('quotes').fondOne(ObjectID(id)));
+        ).then(result => db.collection('quotes').findOne(ObjectID(id)));
     }
 });
 
