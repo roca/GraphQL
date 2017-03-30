@@ -1,11 +1,20 @@
 import React from 'react';
 import Relay from 'react-relay';
 
+import ThumbsUpMutation from './thumbs-up-mutation';
+
 class Quote extends React.Component {
 
     showLikes = () => {
         this.props.relay.setVariables({showLikes: true});
     };
+    thumbsUpClick= () => {
+        Relay.Store.commitUpdate(new ThumbsUpMutation({ 
+            guote: this.props.quote
+            })
+        )
+    };
+
     displayLikes() {
         if (!this.props.relay.variables.showLikes) {
             return null;
@@ -13,7 +22,8 @@ class Quote extends React.Component {
         return (
             <div>
                 {this.props.quote.likesCount} &nbsp;
-                <span className="glyphicon glyphicon-thumbs-up"></span>
+                <span className="glyphicon glyphicon-thumbs-up"
+                onClick={this.thumbsUpClick}></span>
             </div>
         );
     }
