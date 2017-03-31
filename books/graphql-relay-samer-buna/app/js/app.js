@@ -18,7 +18,6 @@ class QuotesLibrary extends React.Component{
     }
 
     render() {
-        console.log(this.props.library.quotesConnection.edges.map(edge => edge.node));
         return (
             <div className="quotes-library">
                 <SearchForm searchAction={ this.search } />

@@ -9,9 +9,8 @@ class Quote extends React.Component {
         this.props.relay.setVariables({showLikes: true});
     };
     thumbsUpClick= () => {
-        console.log(this.props.quote);
         Relay.Store.commitUpdate(new ThumbsUpMutation({ 
-            guote: this.props.quote
+            quote: this.props.quote
             })
         )
     };
