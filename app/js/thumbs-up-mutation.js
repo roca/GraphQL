@@ -2,13 +2,48 @@ import Relay from 'react-relay';
 
 class ThumbsUpMutation extends Relay.Mutation {
 
-    getMutation() {}
+    static fragments = {
+        quote: () => Relay.QL `
+            fragment on Quote {
+                id
+            }
+        `
+    };
 
-    getVariables() {}
+    getMutation() {
+        return Relay.QL `
+            mutation {
+                thumbsUp
+            }
+        `;
+    }
 
-    getFatQuery() {}
+    getVariables() {
+        return {
+            quoteId: this.props.quote.id
+        };
+    }
+
+    getFatQuery() {
+        return Relay.QL `
+            fragment on ThumbsUpMutationPayload {
+                quote {
+                    likesCount
+                }
+            }
+        `;
+    }
     
-    getConfigs() {}
+    getConfigs() {
+        return [
+            {
+                type: 'FIELDS_CHANGE',
+                fieldIDs: {
+                    quote: this.props.quote.id
+                }
+            }
+        ];
+    }
 
 }
 

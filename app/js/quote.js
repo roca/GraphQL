@@ -9,6 +9,7 @@ class Quote extends React.Component {
         this.props.relay.setVariables({showLikes: true});
     };
     thumbsUpClick= () => {
+        console.log(this.props.quote);
         Relay.Store.commitUpdate(new ThumbsUpMutation({ 
             guote: this.props.quote
             })
@@ -46,6 +47,7 @@ Quote = Relay.createContainer(Quote, {
     fragments: {
         quote: () => Relay.QL `
             fragment OneQuote on Quote {
+                ${ThumbsUpMutation.getFragment('quote')}
                 text
                 author
                 likesCount @include(if: $showLikes)
