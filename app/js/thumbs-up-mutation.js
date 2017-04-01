@@ -45,6 +45,14 @@ class ThumbsUpMutation extends Relay.Mutation {
         ];
     }
 
+    getOptimisticResponse() {
+        return {
+            quote: {
+                id: this.props.quote.id,
+                likesCount: this.props.likesCount + 1
+            }
+        }
+    }
 }
 
 export default ThumbsUpMutation;
