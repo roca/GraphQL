@@ -1,0 +1,40 @@
+version: "2"
+ 
+services:
+   mongo:
+      container_name: mongo
+      build:
+        context: .
+        dockerfile: .docker/mongo.dockerfile
+      ports:
+        - "27017:27017"
+      env_file:
+        - ./.docker/env/mongo.env
+   app:
+      container_name: app
+      build: 
+        context: .
+        dockerfile: .docker/app.dockerfile
+      ports:
+        - "3000:3000"
+      depends_on:
+        - "mongo" 
+      command:  >
+        /bin/sh -c "
+            while ! nc -z mongo 27017;
+            do
+                echo sleeping;
+                sleep 3;
+            done;
+            sleep 3;
+            echo 'Connected to Mongo Database!';
+            node --harmony_destructuring database/loadTestMongoData.js &&
+            npm run start"
+      volumes:
+        - ./app:/var/app
+      environment:
+        SSH_AUTH_SOCK: /ssh-agent
+        MONGO_URL: mongodb://mongo:27017/app
+      working_dir: /var/app
+        
+  

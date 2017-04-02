@@ -1,0 +1,47 @@
+{
+  "name": "rgrjs",
+  "version": "1.0.0",
+  "description": "Building Data-driven React Applications with Relay, GraphQL, and Flux",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -L --exec babel-node --presets react,es2015,stage-0 --ignore schema.json server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/roca/GraphQL.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/roca/GraphQL/issues"
+  },
+  "homepage": "https://github.com/roca/GraphQL#readme",
+  "dependencies": {
+    "babel": "^6.5.2",
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-relay-plugin": "^0.10.0",
+    "events": "^1.1.1",
+    "express": "^4.14.0",
+    "express-graphql": "^0.6.1",
+    "flux": "^3.1.2",
+    "graphql": "^0.8.2",
+    "graphql-relay": "^0.5.1",
+    "humps": "^2.0.0",
+    "jquery": "^3.1.1",
+    "kerberos": "0.0.22",
+    "lodash": "^4.17.4",
+    "moment": "^2.17.1",
+    "mongodb": "^2.2.21",
+    "nodemon": "^1.11.0",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "react-relay": "^0.10.0"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.22.0"
+  }
+}
