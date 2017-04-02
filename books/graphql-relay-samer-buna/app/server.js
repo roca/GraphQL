@@ -1,11 +1,7 @@
-const fs = require('fs');
-const path = require('path');
 const  { MongoClient }  = require('mongodb');
 const assert = require('assert');
 const graphqlHTTP = require('express-graphql');
-const { graphql } = require('graphql');
 const express = require('express');
-const { introspectionQuery } = require('graphql/utilities')
 
 const app = express();
 app.use(express.static('public'));
@@ -28,15 +24,6 @@ MongoClient.connect(mongoConfig.url, (err, db) => {
         context: { db },
         graphiql: true
     }));
-    graphql(schema, introspectionQuery)
-    .then(result => {
-        fs.writeFile(
-            path.join(__dirname, 'cache/schema.json'),
-            JSON.stringify(result, null, 2)
-        );
-        console.log('Generated cached schema.json file');
-    })
-    .catch(console.error);
 
     app.listen(3000, () => console.log('Runninng Express.js on port 3000'));
 

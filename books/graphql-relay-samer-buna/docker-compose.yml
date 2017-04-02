@@ -28,7 +28,9 @@ services:
             done;
             sleep 3;
             echo 'Connected to Mongo Database!';
-            node --harmony_destructuring database/loadTestMongoData.js &&
+            node --harmony_destructuring database/loadTestMongoData.js;
+            npm run generate-schema;
+            npm run bundle;
             npm run start"
       volumes:
         - ./app:/var/app

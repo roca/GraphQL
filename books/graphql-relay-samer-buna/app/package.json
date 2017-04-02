@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -L --exec babel-node --presets react,es2015,stage-0 --ignore schema.json index.js"
+    "generate-schema": "babel-node --presets react,es2015,stage-0 generateSchemaCache.js",
+    "bundle": "NODE_ENV=production webpack -p --config webpack.config.prod.js",
+    "start": "nodemon -L --exec babel-node --presets react,es2015,stage-0 --ignore schema.json server.js"
   },
   "repository": {},
   "license": "MIT",
