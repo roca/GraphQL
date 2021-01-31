@@ -1,1 +1,10 @@
-{}
+{
+	"auth": {
+		"familyhelper61724cef": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
+	}
+}
