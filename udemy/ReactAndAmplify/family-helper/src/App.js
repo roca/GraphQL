@@ -4,14 +4,18 @@ import awsConfig from './aws-exports';
 import {AmplifyAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import {listLists} from './graphql/queries';
 import { useEffect, useState } from 'react';
+import 'semantic-ui-css/semantic.min.css';
+import MainHeder from './components/headers/MainHeader';
+
+import Lists from './components/Lists/Lists';
 
 Amplify.configure(awsConfig);
 
 function App() {
-  const [list, setList] = useState([]);
+  const [lists, setLists] = useState([]);
   async function fetchList() {
     const { data } = await API.graphql(graphqlOperation(listLists));
-    setList(data.listLists.items);
+    setLists(data.listLists.items);
     console.log(data);
   }
   useEffect(() => {
@@ -19,12 +23,12 @@ function App() {
   }, []);
   return (
     <AmplifyAuthenticator>
+      <AmplifySignOut />
       <div className="App">
-        <h1> Welcome to Amplify</h1>
+        <MainHeder />
         <ul>
-         {list.map(item =>  <li key={item.id} >{item.title}</li> )}
+          <Lists lists={lists} />
         </ul>
-        <AmplifySignOut />
       </div>
     </AmplifyAuthenticator>
   );
