@@ -5,7 +5,7 @@ import {AmplifyAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import {listLists} from './graphql/queries';
 import { useEffect, useState } from 'react';
 import 'semantic-ui-css/semantic.min.css';
-import { Container } from 'semantic-ui-react';
+import { Button, Container, Icon, Modal } from 'semantic-ui-react';
 
 import MainHeder from './components/headers/MainHeader';
 
@@ -26,6 +26,9 @@ function App() {
   return (
     <AmplifyAuthenticator>
       <AmplifySignOut />
+      <Button className="floatingButton">
+        <Icon name="plus" className="floatingButton_icon"/>
+      </Button>
       <Container>
         <div className="App">
           <MainHeder />
