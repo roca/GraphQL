@@ -3,7 +3,7 @@ import Amplify, {API, graphqlOperation} from 'aws-amplify';
 import awsConfig from './aws-exports';
 import {AmplifyAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import {listLists} from './graphql/queries';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useReducer } from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import { Button, Container, Icon, Modal, Form } from 'semantic-ui-react';
 
@@ -13,7 +13,30 @@ import Lists from './components/Lists/Lists';
 
 Amplify.configure(awsConfig);
 
+const actions = {
+  TITLE_CHANGE: 'TITLE_CHANGE',
+  DESCRIPTION_CHANGE: 'DESCRIPTION_CHANGE'
+}
+
+const intialState = {
+  title: '',
+  description: ''
+}
+function listReducer(state = intialState, action) {
+  switch (action.type) {
+    case actions.DESCRIPTION_CHANGE:
+      return {...state, description: action.value}
+    case actions.TITLE_CHANGE:
+      return {...state, title: action.value}
+    default:
+      console.log('Default action for', action);
+      return state
+  }
+}
+
 function App() {
+  const [state, dispatch] = useReducer(listReducer, intialState);
+
   const [lists, setLists] = useState([]);
   const [isModalOpen, setISModalOpen] = useState(true);
   
@@ -52,10 +75,14 @@ function App() {
               error={true ? false : {content: "please add a name to your list"}}
               label="Title" 
               placeholder="My pretty list"
+              value={state.title}
+              onChange={(e) => dispatch({ type: actions.TITLE_CHANGE, value: e.target.value })}
               ></Form.Input>
             <Form.TextArea 
               label="Description"
               placeholder="Things that my pretty list is about"
+              value={state.description}
+              onChange={(e) => dispatch({ type: actions.DESCRIPTION_CHANGE, value: e.target.value })}
               ></Form.TextArea>
           </Form>
         </Modal.Content>
