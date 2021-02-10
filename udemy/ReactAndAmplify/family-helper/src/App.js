@@ -11,6 +11,7 @@ import Lists from './components/Lists/Lists';
 
 import {listLists} from './graphql/queries';
 import { createList } from './graphql/mutations';
+import { onCreateList } from './graphql/subscriptions';
 
 Amplify.configure(awsConfig);
 
@@ -39,6 +40,7 @@ function App() {
   const [state, dispatch] = useReducer(listReducer, intialState);
 
   const [lists, setLists] = useState([]);
+  const [newList, setNewList] = useState('');
   const [isModalOpen, setISModalOpen] = useState(false);
   
   async function fetchList() {
@@ -48,6 +50,24 @@ function App() {
   }
   useEffect(() => {
      fetchList();
+  }, []);
+
+  useEffect(() => {
+    if (newList !== '') {
+      setLists([newList, ...lists]);
+    }
+  }, [newList]);
+
+  function addToList({data}) {
+    setNewList(data.onCreateList);
+  }
+
+  useEffect(() => {
+    let subscription = API
+    .graphql(graphqlOperation(onCreateList))
+    .subscribe({
+      next: ({provider, value}) => addToList(value)
+    });
   }, []);
 
   function toggleModal(shouldOpen) {
