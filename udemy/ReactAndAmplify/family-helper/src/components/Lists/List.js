@@ -1,7 +1,9 @@
 import React from 'react';
-import { Item } from 'semantic-ui-react';
+import { Item, Icon } from 'semantic-ui-react';
 
-function List({title, description, createdAt}) {
+import {actions} from '../../Actions';
+
+function List({id, title, description, createdAt, dispatch}) {
     return (
         <Item>
             <Item.Image 
@@ -10,7 +12,10 @@ function List({title, description, createdAt}) {
             <Item.Content>
                 <Item.Header>{title}</Item.Header>
                 <Item.Description>{description}</Item.Description>
-                <Item.Extra>{new Date(createdAt).toDateString()}</Item.Extra>
+                <Item.Extra>
+                    {new Date(createdAt).toDateString()}
+                    <Icon name="trash" className="ml-3" onClick={() => dispatch({type: actions.DELETE_LIST, value: id})}/>
+                </Item.Extra>
             </Item.Content>
         </Item>
     );

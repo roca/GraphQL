@@ -2,7 +2,7 @@ import './App.css';
 import Amplify, {API, graphqlOperation} from 'aws-amplify';
 import awsConfig from './aws-exports';
 import {AmplifyAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { useEffect, useState, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import { Button, Container, Icon, Modal, Form } from 'semantic-ui-react';
 
@@ -13,18 +13,15 @@ import {listLists} from './graphql/queries';
 import { createList } from './graphql/mutations';
 import { onCreateList } from './graphql/subscriptions';
 
+import {actions} from './Actions';
+
 Amplify.configure(awsConfig);
 
-const actions = {
-  TITLE_CHANGE: 'TITLE_CHANGE',
-  DESCRIPTION_CHANGE: 'DESCRIPTION_CHANGE',
-  OPEN_MODAL: 'OPEN_MODAL',
-  CLOSE_MODAL: 'CLOSE_MODAL'
-}
 
 const intialState = {
   title: '',
   description: '',
+  lists: [],
   isModalOpen: false
 }
 function listReducer(state = intialState, action) {
@@ -33,10 +30,15 @@ function listReducer(state = intialState, action) {
       return {...state, description: action.value}
     case actions.TITLE_CHANGE:
       return {...state, title: action.value}
+    case actions.UPDATE_LISTS:
+      return { ...state, lists: [...action.value, ...state.lists] }
     case actions.OPEN_MODAL:
       return {...state, isModalOpen: true}
     case actions.CLOSE_MODAL:
-      return {...state, isModalOpen: false, title: '', description: ''}
+      return {...state, isModalOpen: false, title: '', description: '' }
+    case actions.DELETE_LIST:
+      console.log(action.value);
+      return {...state}
     default:
       console.log('Default action for', action);
       return state
@@ -45,35 +47,25 @@ function listReducer(state = intialState, action) {
 
 function App() {
   const [state, dispatch] = useReducer(listReducer, intialState);
-
-  const [lists, setLists] = useState([]);
-  const [newList, setNewList] = useState('');
   
   async function fetchList() {
     const { data } = await API.graphql(graphqlOperation(listLists));
-    setLists(data.listLists.items);
-    console.log(data);
+    dispatch({ type: actions.UPDATE_LISTS, value: data.listLists.items })
   }
   useEffect(() => {
      fetchList();
   }, []);
 
   useEffect(() => {
-    if (newList !== '') {
-      setLists([newList, ...lists]);
-    }
-  }, [newList]);
-
-  function addToList({data}) {
-    setNewList(data.onCreateList);
-  }
-
-  useEffect(() => {
     let subscription = API
     .graphql(graphqlOperation(onCreateList))
     .subscribe({
-      next: ({provider, value}) => addToList(value)
+      next: ({provider, value}) => {
+        console.log(value);
+        dispatch({type: actions.UPDATE_LISTS, value: [value.data.onCreateList]})
+      }
     });
+    return () => subscription.unsubscribe();
   }, []);
 
   async function saveList() {
@@ -93,7 +85,7 @@ function App() {
         <div className="App">
           <MainHeder />
           <ul>
-            <Lists lists={lists} />
+            <Lists lists={state.lists} dispatch={dispatch}/>
           </ul>
         </div>
       </Container>
