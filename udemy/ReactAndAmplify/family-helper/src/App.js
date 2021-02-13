@@ -10,7 +10,7 @@ import MainHeder from './components/headers/MainHeader';
 import Lists from './components/Lists/Lists';
 
 import {listLists} from './graphql/queries';
-import { createList } from './graphql/mutations';
+import { createList, deleteList } from './graphql/mutations';
 import { onCreateList } from './graphql/subscriptions';
 
 import {actions} from './Actions';
@@ -38,12 +38,19 @@ function listReducer(state = intialState, action) {
       return {...state, isModalOpen: false, title: '', description: '' }
     case actions.DELETE_LIST:
       console.log(action.value);
+      deleteListById(action.value);
       return {...state}
     default:
       console.log('Default action for', action);
       return state
   }
 }
+
+async function deleteListById(id) {
+  const result = await API.graphql(graphqlOperation(deleteList, {input: {id}}))
+  console.log('delete', result);
+}
+
 
 function App() {
   const [state, dispatch] = useReducer(listReducer, intialState);
@@ -52,6 +59,8 @@ function App() {
     const { data } = await API.graphql(graphqlOperation(listLists));
     dispatch({ type: actions.UPDATE_LISTS, value: data.listLists.items })
   }
+
+  
   useEffect(() => {
      fetchList();
   }, []);
