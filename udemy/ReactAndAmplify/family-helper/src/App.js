@@ -11,7 +11,7 @@ import Lists from './components/Lists/Lists';
 
 import {listLists} from './graphql/queries';
 import { createList, deleteList } from './graphql/mutations';
-import { onCreateList } from './graphql/subscriptions';
+import { onCreateList, onDeleteList } from './graphql/subscriptions';
 
 import {actions} from './Actions';
 
@@ -40,6 +40,17 @@ function listReducer(state = intialState, action) {
       console.log(action.value);
       deleteListById(action.value);
       return {...state}
+    case actions.DELETE_LIST_RESULT:
+      const newList = state.lists.filter(item => item.id !== action.value);
+      return {...state, lists: newList}
+    case actions.EDIT_LIST:
+      console.log(action.value);
+      const newValue = {...action.value}
+      delete newValue.children;
+      delete newValue.listItems;
+      delete newValue.dispatch;
+      console.log(newValue); 
+      return {...state}
     default:
       console.log('Default action for', action);
       return state
@@ -66,7 +77,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    let subscription = API
+    let createListSub = API
     .graphql(graphqlOperation(onCreateList))
     .subscribe({
       next: ({provider, value}) => {
@@ -74,7 +85,21 @@ function App() {
         dispatch({type: actions.UPDATE_LISTS, value: [value.data.onCreateList]})
       }
     });
-    return () => subscription.unsubscribe();
+
+    let deleteListSub = API
+    .graphql(graphqlOperation(onDeleteList))
+    .subscribe({
+      next: ({provider, value}) => {
+        console.log(value);
+        dispatch({type: actions.DELETE_LIST_RESULT, value: value.data.onDeleteList.id })
+      }
+    });
+
+    return () => {
+      createListSub.unsubscribe();
+      deleteListSub.unsubscribe();
+    }
+
   }, []);
 
   async function saveList() {
