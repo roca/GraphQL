@@ -11,8 +11,8 @@ import Lists from './components/Lists/Lists';
 import ListModal from './components/modals/ListModal';
 
 import {listLists} from './graphql/queries';
-import { createList, deleteList } from './graphql/mutations';
-import { onCreateList, onDeleteList } from './graphql/subscriptions';
+import { deleteList } from './graphql/mutations';
+import { onCreateList, onDeleteList, onUpdateList } from './graphql/subscriptions';
 
 import {actions} from './Actions';
 
@@ -20,6 +20,7 @@ Amplify.configure(awsConfig);
 
 
 const intialState = {
+  id: '',
   title: '',
   description: '',
   lists: [],
@@ -27,6 +28,7 @@ const intialState = {
   modalType: ''
 }
 function listReducer(state = intialState, action) {
+  let newList;
   switch (action.type) {
     case actions.DESCRIPTION_CHANGE:
       return {...state, description: action.value}
@@ -37,13 +39,13 @@ function listReducer(state = intialState, action) {
     case actions.OPEN_MODAL:
       return {...state, isModalOpen: true, modalType: 'add'}
     case actions.CLOSE_MODAL:
-      return {...state, isModalOpen: false, title: '', description: '' }
+      return {...state, isModalOpen: false, id: '', title: '', description: '' }
     case actions.DELETE_LIST:
       console.log(action.value);
       deleteListById(action.value);
       return {...state}
     case actions.DELETE_LIST_RESULT:
-      const newList = state.lists.filter(item => item.id !== action.value);
+      newList = state.lists.filter(item => item.id !== action.value);
       return {...state, lists: newList}
     case actions.EDIT_LIST:
       console.log(action.value);
@@ -52,7 +54,13 @@ function listReducer(state = intialState, action) {
       delete newValue.listItems;
       delete newValue.dispatch;
       console.log(newValue); 
-      return {...state, isModalOpen: true, modalType: 'edit', title: newValue.title, description: newValue.description}
+      return {...state, isModalOpen: true, modalType: 'edit', id: newValue.id, title: newValue.title, description: newValue.description}
+    case actions.UPDATE_LIST_RESULT:
+      const index = state.lists.findIndex(item => item.id === action.value.id);
+      newList = [...state.lists];
+      delete action.value.listItems;
+      newList[index] = action.value;
+      return {...state, lists: newList}
     default:
       console.log('Default action for', action);
       return state
@@ -79,37 +87,43 @@ function App() {
   }, []);
 
   useEffect(() => {
-    let createListSub = API
+
+    const createListSub = API
     .graphql(graphqlOperation(onCreateList))
     .subscribe({
-      next: ({provider, value}) => {
-        console.log(value);
+      next: ({_, value}) => {
+        console.log('onCreateList called');
         dispatch({type: actions.UPDATE_LISTS, value: [value.data.onCreateList]})
       }
     });
 
-    let deleteListSub = API
+    const updateListSub = API
+    .graphql(graphqlOperation(onUpdateList))
+    .subscribe({
+      next: ({_, value}) => {
+        console.log('onUpdateList called', value);
+        dispatch({type: actions.UPDATE_LIST_RESULT, value: value.data.onUpdateList })
+      }
+    });
+
+    const deleteListSub = API
     .graphql(graphqlOperation(onDeleteList))
     .subscribe({
-      next: ({provider, value}) => {
-        console.log(value);
+      next: ({_, value}) => {
+        console.log('onDeleteList called');
         dispatch({type: actions.DELETE_LIST_RESULT, value: value.data.onDeleteList.id })
       }
     });
 
+
     return () => {
       createListSub.unsubscribe();
       deleteListSub.unsubscribe();
+      updateListSub.unsubscribe();
     }
 
   }, []);
 
-  async function saveList() {
-    const { title, description } = state
-    const result = await API.graphql(graphqlOperation(createList, { input: { title, description } })); 
-    dispatch({type: actions.CLOSE_MODAL});
-    console.log('Saved data with result: ', result);
-  }
 
   return (
     <AmplifyAuthenticator>
@@ -125,7 +139,7 @@ function App() {
           </ul>
         </div>
       </Container>
-      <ListModal state={state} dispatch={dispatch} saveList={saveList} />
+      <ListModal state={state} dispatch={dispatch}/>
     </AmplifyAuthenticator>
   );
 }
