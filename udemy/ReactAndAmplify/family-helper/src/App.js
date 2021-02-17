@@ -9,6 +9,7 @@ import { Button, Container, Icon } from 'semantic-ui-react';
 import MainHeder from './components/headers/MainHeader';
 import Lists from './components/Lists/Lists';
 import ListModal from './components/modals/ListModal';
+import UploadImage from "./components/HandleImages/UploadImage";
 
 import {listLists} from './graphql/queries';
 import { deleteList } from './graphql/mutations';
@@ -134,10 +135,9 @@ function App() {
         </Button>
         <div className="App">
           <MainHeder />
-          <ul>
             <Lists lists={state.lists} dispatch={dispatch}/>
-          </ul>
         </div>
+        <UploadImage />
       </Container>
       <ListModal state={state} dispatch={dispatch}/>
     </AmplifyAuthenticator>
