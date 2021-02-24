@@ -1,3 +1,4 @@
+import React from 'react'
 import './App.css';
 import Amplify, {API, graphqlOperation} from 'aws-amplify';
 import awsConfig from './aws-exports';
@@ -9,7 +10,6 @@ import { Button, Container, Icon } from 'semantic-ui-react';
 import MainHeder from './components/headers/MainHeader';
 import Lists from './components/Lists/Lists';
 import ListModal from './components/modals/ListModal';
-import UploadImage from "./components/HandleImages/UploadImage";
 
 import {listLists} from './graphql/queries';
 import { deleteList } from './graphql/mutations';
@@ -137,7 +137,6 @@ function App() {
           <MainHeder />
             <Lists lists={state.lists} dispatch={dispatch}/>
         </div>
-        <UploadImage />
       </Container>
       <ListModal state={state} dispatch={dispatch}/>
     </AmplifyAuthenticator>
