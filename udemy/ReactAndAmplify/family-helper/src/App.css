@@ -39,3 +39,7 @@
   margin: 0px !important;
   padding: 0px !important;
 }
+
+.ui.dimmer{
+  padding: 0 !important;
+}
