@@ -13,12 +13,14 @@ function List(props) {
     async function fetchImageUrl() {
         const imgUrl = await Storage.get(imageKey);
         setImageUrl(imgUrl);
+        setIsLoading(false);
     }
 
     useEffect(() => {
         if (imageKey) {
-           fetchImageUrl();
-        }
+           return fetchImageUrl();
+        } 
+        setIsLoading(false)
     }, [])
 
     const content = <Loader />;
