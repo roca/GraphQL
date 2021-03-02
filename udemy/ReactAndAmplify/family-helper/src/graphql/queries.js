@@ -173,12 +173,14 @@ export const searchLists = /* GraphQL */ `
     $sort: SearchableListSortInput
     $limit: Int
     $nextToken: String
+    $from: Int
   ) {
     searchLists(
       filter: $filter
       sort: $sort
       limit: $limit
       nextToken: $nextToken
+      from: $from
     ) {
       items {
         id

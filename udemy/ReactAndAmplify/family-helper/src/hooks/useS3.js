@@ -13,7 +13,7 @@ export function useS3() {
                 app: 'family helper'
             }
         });
-        console.log('save to s3 ');
+        console.log('save to s3 ', result);
         return key;
      }
      return [saveToS3];

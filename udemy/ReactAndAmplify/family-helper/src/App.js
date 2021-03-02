@@ -78,8 +78,12 @@ function App() {
   const [state, dispatch] = useReducer(listReducer, intialState);
   
   async function fetchList() {
-    const { data } = await API.graphql(graphqlOperation(listLists));
-    dispatch({ type: actions.UPDATE_LISTS, value: data.listLists.items })
+    try {
+      const { data } = await API.graphql(graphqlOperation(listLists));
+      dispatch({ type: actions.UPDATE_LISTS, value: data.listLists.items })
+    } catch(err) {
+      console.log('error: ', err)
+    }
   }
 
   
