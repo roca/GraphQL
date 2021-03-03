@@ -3,7 +3,7 @@ type List @model @searchable {
 	title: String!
 	description: String
 	imageKey: String
-	slug: String
+	slug: String!
 	listItems: [ListItem] @connection(name:"ListListItems")
 }
 
