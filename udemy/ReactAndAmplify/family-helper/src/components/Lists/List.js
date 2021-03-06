@@ -1,4 +1,6 @@
 import React ,{ useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'
+
 import { Dimmer, Item, Icon, Image, Loader } from 'semantic-ui-react';
 
 import { Storage } from 'aws-amplify'
@@ -6,7 +8,7 @@ import { Storage } from 'aws-amplify'
 import {actions} from '../../Actions';
 
 function List(props) {
-    const {id, title, description, imageKey, createdAt, dispatch} = props
+    const {id, title, description, imageKey, createdAt, dispatch, slug} = props
     const [imageUrl, setImageUrl] = useState('https://react.semantic-ui.com/images/wireframe/image.png');
     const [isLoading, setIsLoading] = useState(true);
 
@@ -35,7 +37,7 @@ function List(props) {
                 src={imageUrl}
                 ></Dimmer.Dimmable>
             <Item.Content>
-                <Item.Header>{title}</Item.Header>
+                <Item.Header as={Link} to={`/list/${slug}`}>{title}</Item.Header>
                 <Item.Description>{description}</Item.Description>
                 <Item.Extra>
                     {new Date(createdAt).toDateString()}

@@ -7,9 +7,11 @@ function App() {
   return (
    <BrowserRouter>
     <Switch>
-      <Route path="/list">
-        <List />
-      </Route>
+      <Route path="/list/:slug" 
+        render={(props)=>{
+          return <List {...props}/>;
+        }} 
+      />
       <Route path="/" >
         <Main />
       </Route>
