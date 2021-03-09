@@ -22,3 +22,7 @@ type Action @model {
 	action: String
 	listItem: ListItem @connection(name:"ListItemActions")
 }
+
+type Query {
+  echo(msg: String): String @function(name: "family-helper-echo")
+}
